@@ -1,0 +1,23 @@
+from django.contrib import admin
+from users.models import User
+# Register your models here.
+
+#admin.site.register(User)
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    # listdisplay设置要显示在列表中的字段（id字段是Django模型的默认主键）
+    list_display = ('id', 'username', 'email', 'nickname','date_joined')
+    # list_per_page设置每页显示多少条记录，默认是100条
+    list_per_page = 50
+    # ordering设置默认排序字段，负号表示降序排序
+    ordering = ('-date_joined',)
+    # list_editable 设置默认可编辑字段
+    list_editable = ['username', 'nickname','date_joined']
+    list_filter = ('username','email')
+    search_fields = ('username', 'email')  # 搜索字段
+    date_hierarchy = 'date_joined'
+
+#admin.site.register(User,UserAdmin)
+admin.site.site_header = '用户管理系统'
+admin.site.site_title = '用户管理系统'
