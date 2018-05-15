@@ -185,11 +185,12 @@
     </div>
 </div>-->
 {% if user.is_authenticated %}
+    {% block header %}
     <div class="pg_header">
         <div class="logo left">菲宇运维</div>
         <div class="hl-menu left">
             {% for classify in classify_list %}
-                    <a class="item">{{classify.name}}</a>
+                    <a class="item" href="list_classify.html?nid={{ classify.id }}">{{classify.name}}</a>
             {% endfor%}
         </div>
         <div class="hr-menu right">您已登录，欢迎您！<a href="" class="item"> 用户名</a>:{{ user.username }}-<a class="item" href=""> 昵称</a>:{{ user.nickname }}
@@ -197,6 +198,7 @@
                     <a  href="{% url 'password_change' %}?next={{ request.path }}" class="item">修改密码</a>
         </div>
     </div>
+    {% endblock %}
     <div class="pg_body center w1100">
         <div class="content left img-thumbnail">
             {% block content %}
@@ -212,7 +214,7 @@
                  <div class="title btn btn-primary">标签管理</div>
                 <div class="item">
                     {% for tag in tag_list %}
-                    <a class="btn">{{tag.name}}({{tag.num_article}})</a>
+                    <a class="btn" href="/list_tag.html?nid={{ tag.id }}">{{tag.name}}({{tag.num_article}})</a>
                     {% endfor%}
                 </div>
             </div>
@@ -220,7 +222,7 @@
                  <div class="title btn btn-primary">分类管理</div>
                 <div class="item">
                     {% for classify in classify_list %}
-                    <a class="btn">{{classify.name}}({{classify.num_article}})</a>
+                    <a class="btn" href="list_classify.html?nid={{ classify.id }}">{{classify.name}}({{classify.num_article}})</a>
                     {% endfor%}
                 </div>
             </div>
@@ -228,7 +230,7 @@
                  <div class="title btn btn-primary">最新文章</div>
                 <div class="item">
                     {% for item in article_list %}
-                    <a class="btn" href="{{item.id}}" style="font-size: 14px">{{item.title}}</a>
+                    <a class="btn" href="/article.html?nid={{item.id}}" style="font-size: 14px">{{item.title}}</a>
                     {% endfor%}
                 </div>
             </div>
@@ -236,7 +238,7 @@
                  <div class="title btn btn-primary">时间分类</div>
                 <div class="item">
                     {% for item in date_list %}
-                    <a class="btn" href="{{item.id}}">{{item.ctime}}</a>
+                    <a class="btn" href="list_date-{{item.ctime}}.html">{{item.ctime}}</a>
                     {% endfor%}
                 </div>
             </div>

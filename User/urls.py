@@ -21,7 +21,12 @@ from users import views
 app_name = 'users'
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^header.html', views.header),
     url(r'^article', views.article, name='article'),
+    url(r'^list_summary.html', views.list_summary),
+    url(r'^list_classify.html$', views.list_classify),
+    url(r'^list_tag.html$', views.list_tag),
+    url(r'^list_date-(?P<ctime>\w+-*\w*).html$', views.list_data),
     url(r'^users/', include('users.urls')),
     url(r'^users/', include('django.contrib.auth.urls')),
     url(r'^$', views.index, name='index')

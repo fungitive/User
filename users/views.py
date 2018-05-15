@@ -51,5 +51,77 @@ def index(request):
 
 def article(request):
     nid = request.GET.get('nid')
+    classify_list = models.Classify.objects.annotate(num_article=Count('article'))
     article = models.Article.objects.filter(id = nid).first()
-    return  render(request,'article.html',{'article':article})
+    article_list = models.Article.objects.all()
+    tag_list = models.Tag.objects.annotate(num_article=Count('article'))
+    date_list = models.Article.objects.raw(
+        'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
+    return  render(request,'article.html',{'article':article,'classify_list': classify_list,
+                                           'article_list': article_list,
+                                           'tag_list': tag_list,
+                                           'date_list': date_list
+                                           })
+
+def header(request):
+    return render(request, 'include/header.html')
+
+def list_summary(request):
+    classify_list = models.Classify.objects.annotate(num_article=Count('article'))
+    article_list = models.Article.objects.all()
+    article = models.Article.objects.all()[1::5]
+    tag_list = models.Tag.objects.annotate(num_article=Count('article'))
+    date_list = models.Article.objects.raw(
+        'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
+    return render(request, 'list_summary.html', {'classify_list': classify_list,
+                                            'article_list': article_list,
+                                            'tag_list': tag_list,
+                                            'date_list': date_list,
+
+                                            })
+
+def list_tag(request):
+    nid = request.GET.get('nid')
+    article = models.Article.objects.filter(tag=nid).first()
+    classify_list = models.Classify.objects.annotate(num_article=Count('article'))
+    article_list = models.Article.objects.filter(tag=nid).all()
+    tag_list = models.Tag.objects.annotate(num_article=Count('article'))
+    date_list = models.Article.objects.raw(
+        'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
+    return render(request, 'list_classify.html', {'classify_list': classify_list,
+                                                 'article_list': article_list,
+                                                 'tag_list': tag_list,
+                                                 'date_list': date_list,
+                                                 'article': article,
+                                                  })
+
+def list_classify(request):
+    nid = request.GET.get('nid')
+    article = models.Article.objects.all()[1:5]
+    classify_list = models.Classify.objects.annotate(num_article=Count('article'))
+    article_list = models.Article.objects.filter(classify=nid).all()
+    tag_list = models.Tag.objects.annotate(num_article=Count('article'))
+    date_list = models.Article.objects.raw(
+        'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
+    return render(request, 'list_classify.html', {'classify_list': classify_list,
+                                                 'article_list': article_list,
+                                                 'tag_list': tag_list,
+                                                 'date_list': date_list,
+                                                 'article': article,
+                                                  })
+
+
+def list_data(request,ctime):
+    nid = request.GET.get('nid')
+    article = models.Article.objects.all()[1:5]
+    classify_list = models.Classify.objects.annotate(num_article=Count('article'))
+    article_list = models.Article.objects.all().extra(where=['strftime("%%Y-%%m",create_time)=%s'], params=[ctime, ]).all()
+    tag_list = models.Tag.objects.annotate(num_article=Count('article'))
+    date_list = models.Article.objects.raw(
+        'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
+    return render(request, 'list_classify.html', {'classify_list': classify_list,
+                                                 'article_list': article_list,
+                                                 'tag_list': tag_list,
+                                                 'date_list': date_list,
+                                                 'article': article,
+                                                  })
