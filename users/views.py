@@ -115,7 +115,7 @@ def list_data(request,ctime):
     nid = request.GET.get('nid')
     article = models.Article.objects.all()[1:5]
     classify_list = models.Classify.objects.annotate(num_article=Count('article'))
-    article_list = models.Article.objects.all().extra(where=['strftime("%%Y-%%m",create_time)=%s'], params=[ctime, ]).all()
+    article_list = models.Article.objects.extra(where=['strftime("%%Y-%%m",update_time)=%s'], params=[ctime, ]).all()
     tag_list = models.Tag.objects.annotate(num_article=Count('article'))
     date_list = models.Article.objects.raw(
         'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
@@ -125,3 +125,9 @@ def list_data(request,ctime):
                                                  'date_list': date_list,
                                                  'article': article,
                                                   })
+
+def search(resquest):
+    keywords = resquest.POST.get('keywords')
+    print(keywords)
+    result = models.Article.objects.filter(title=keywords)
+    return render(resquest,'search.html',{'result':result})
