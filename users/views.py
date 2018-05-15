@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
-
+from django.db.models.aggregates import Count
+from users import models
 # Create your views here.
 from .forms import RegisterForm
 
@@ -36,4 +37,19 @@ def register(request):
     return render(request, 'users/register.html', context={'form': form, 'next': redirect_to})
 
 def index(request):
-    return render(request, 'index.html')
+    article_list = models.Article.objects.all()
+    tag_list = models.Tag.objects.annotate(num_article=Count('article'))
+    classify_list = models.Classify.objects.annotate(num_article=Count('article'))
+    date_list = models.Article.objects.raw(
+        'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
+    return render(request, 'index.html',{
+                    'article_list':article_list,
+                    'tag_list':tag_list,
+                    'classify_list':classify_list,
+                    'date_list':date_list}
+                  )
+
+def article(request):
+    nid = request.GET.get('nid')
+    article = models.Article.objects.filter(id = nid).first()
+    return  render(request,'article.html',{'article':article})

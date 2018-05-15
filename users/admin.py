@@ -1,5 +1,6 @@
 from django.contrib import admin
 from users.models import User
+from .models import Article,Tag,Classify
 # Register your models here.
 
 #admin.site.register(User)
@@ -18,6 +19,15 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('username', 'email')  # 搜索字段
     date_hierarchy = 'date_joined'
 
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('title','author','create_time','classify','id')
+
+admin.site.register(Article,ArticleAdmin)
 #admin.site.register(User,UserAdmin)
 admin.site.site_header = '用户管理系统'
 admin.site.site_title = '用户管理系统'
+
+admin.site.register(Tag)
+admin.site.register(Classify)
+
+

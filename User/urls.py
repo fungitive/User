@@ -21,6 +21,7 @@ from users import views
 app_name = 'users'
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^article', views.article, name='article'),
     url(r'^users/', include('users.urls')),
     url(r'^users/', include('django.contrib.auth.urls')),
     url(r'^$', views.index, name='index')
