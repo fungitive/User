@@ -36,7 +36,7 @@
             line-height: 48px;
             margin-bottom: 5px;
         }
-        .pg_header .logo{
+        .pg_header .logo,.pg_header .logo a{
             color: white;
             width: 200px;
             background-color: #2b669a;
@@ -208,6 +208,10 @@
                 <p>{{ item.content | safe |striptags}}</p>
             {% endfor%}
             {% endblock %}
+
+    <ul class="pagination pagination-sm">
+        {{ page_obj.page_str|safe }}
+      </ul>
         </div>
         <div class="menu right img-thumbnail">
             <div class="box">

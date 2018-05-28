@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^list_date-(?P<ctime>\w+-*\w*).html$', views.list_data),
     url(r'^users/', include('users.urls')),
     url(r'^users/', include('django.contrib.auth.urls')),
+    url(r'^index.html$', views.index, name='index'),
     url(r'^$', views.index, name='index'),
     # url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
     #     name='django.contrib.sitemaps.views.sitemap'),

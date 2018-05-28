@@ -35,9 +35,12 @@ def register(request):
     # 如果用户正在访问注册页面，则渲染的是一个空的注册表单
     # 如果用户通过表单提交注册信息，但是数据验证不合法，则渲染的是一个带有错误信息的表单
     return render(request, 'users/register.html', context={'form': form, 'next': redirect_to})
-
 def index(request):
-    article_list = models.Article.objects.all()
+    from users.pages import Pagination
+    current_page = request.GET.get('page')
+    count_pages = models.Article.objects.all().count()
+    page_obj = Pagination(count_pages, current_page)
+    article_list = models.Article.objects.all().order_by('-create_time')[page_obj.start():page_obj.end()]
     tag_list = models.Tag.objects.annotate(num_article=Count('article'))
     classify_list = models.Classify.objects.annotate(num_article=Count('article'))
     date_list = models.Article.objects.raw(
@@ -46,14 +49,15 @@ def index(request):
                     'article_list':article_list,
                     'tag_list':tag_list,
                     'classify_list':classify_list,
-                    'date_list':date_list}
+                    'date_list':date_list,
+                    'page_obj':page_obj}
                   )
 
 def article(request):
     nid = request.GET.get('nid')
     classify_list = models.Classify.objects.annotate(num_article=Count('article'))
     article = models.Article.objects.filter(id = nid).first()
-    article_list = models.Article.objects.all()
+    article_list = models.Article.objects.all().order_by('-create_time')
     tag_list = models.Tag.objects.annotate(num_article=Count('article'))
     date_list = models.Article.objects.raw(
         'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
@@ -68,7 +72,7 @@ def header(request):
 
 def list_summary(request):
     classify_list = models.Classify.objects.annotate(num_article=Count('article'))
-    article_list = models.Article.objects.all()
+    article_list = models.Article.objects.all().order_by('-create_time')
     article = models.Article.objects.all()[1::5]
     tag_list = models.Tag.objects.annotate(num_article=Count('article'))
     date_list = models.Article.objects.raw(
@@ -84,7 +88,7 @@ def list_tag(request):
     nid = request.GET.get('nid')
     article = models.Article.objects.filter(tag=nid).first()
     classify_list = models.Classify.objects.annotate(num_article=Count('article'))
-    article_list = models.Article.objects.filter(tag=nid).all()
+    article_list = models.Article.objects.filter(tag=nid).all().order_by('-create_time')
     tag_list = models.Tag.objects.annotate(num_article=Count('article'))
     date_list = models.Article.objects.raw(
         'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
@@ -99,7 +103,7 @@ def list_classify(request):
     nid = request.GET.get('nid')
     article = models.Article.objects.all()[1:5]
     classify_list = models.Classify.objects.annotate(num_article=Count('article'))
-    article_list = models.Article.objects.filter(classify=nid).all()
+    article_list = models.Article.objects.filter(classify=nid).all().order_by('-create_time')
     tag_list = models.Tag.objects.annotate(num_article=Count('article'))
     date_list = models.Article.objects.raw(
         'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
@@ -115,7 +119,7 @@ def list_data(request,ctime):
     nid = request.GET.get('nid')
     article = models.Article.objects.all()[1:5]
     classify_list = models.Classify.objects.annotate(num_article=Count('article'))
-    article_list = models.Article.objects.extra(where=['strftime("%%Y-%%m",update_time)=%s'], params=[ctime, ]).all()
+    article_list = models.Article.objects.extra(where=['strftime("%%Y-%%m",update_time)=%s'], params=[ctime, ]).all().order_by('-create_time')
     tag_list = models.Tag.objects.annotate(num_article=Count('article'))
     date_list = models.Article.objects.raw(
         'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
