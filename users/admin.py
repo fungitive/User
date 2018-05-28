@@ -21,6 +21,10 @@ class UserAdmin(admin.ModelAdmin):
 
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('title','author','create_time','classify','id')
+    class Media:
+        js = ('/static/kindeditor/kindeditor-all-min.js',
+              '/static/kindeditor/lang/zh-CN.js',
+              '/static/kindeditor/config.js')
 
 admin.site.register(Article,ArticleAdmin)
 #admin.site.register(User,UserAdmin)

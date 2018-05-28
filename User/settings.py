@@ -67,7 +67,7 @@ AUTHENTICATION_BACKENDS = (
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'templates').replace('\\', '/'),]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -127,7 +127,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+MEDIA_URL = "/upload/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "upload")
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 AUTH_USER_MODEL = 'users.User'

@@ -16,8 +16,17 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from users import views
+from django.conf import settings
+from django.contrib.sitemaps import GenericSitemap
+from django.contrib.sitemaps.views import sitemap
+from users.models import Classify
+from django.views.static import serve
 
 
+# sitemaps = {
+#     'users': GenericSitemap({'queryset': Classify.objects.all(), 'date_field': 'pub_date'}, priority=0.6),
+#     # 如果还要加其它的可以模仿上面的
+# }
 app_name = 'users'
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -30,7 +39,11 @@ urlpatterns = [
     url(r'^list_date-(?P<ctime>\w+-*\w*).html$', views.list_data),
     url(r'^users/', include('users.urls')),
     url(r'^users/', include('django.contrib.auth.urls')),
-    url(r'^$', views.index, name='index')
+    url(r'^$', views.index, name='index'),
+    # url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+    #     name='django.contrib.sitemaps.views.sitemap'),
+    url(r'^admin/upload/(?P<dir_name>[^/]+)$', views.upload_image, name='upload_image'),
+    url(r'^upload/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, }),
 ]
 
 
