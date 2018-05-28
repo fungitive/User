@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" novalidate>
+    {% csrf_token %}
+    <p>查找<input type="text" name="keyword"><input type="submit" value="查找"></p>
+</form>
+<p>查找结果</p>
+    <p>{{ result.title }}</p>
+    {{ result.article }}
+</body>
+</html>

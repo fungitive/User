@@ -1,0 +1,13 @@
+<div class="pg_header">
+    <div class="logo left"><a href="/"> 菲宇运维</a></div>
+    <div class="hl-menu left">
+        {% for classify in classify_list %}
+            <a class="item" href="list_classify.html?nid={{ classify.id }}">{{classify.name}}</a>
+        {% endfor%}
+         <a class="item" href="/list_summary.html">所有文章</a>
+    </div>
+    <div class="hr-menu right">您已经登录，欢迎您！<a href="" class="item"> 用户名</a>:{{ user.username }}-<a class="item" href=""> 昵称</a>:{{ user.nickname }}
+        <a  href="{% url 'logout' %}?next={{ request.path }}" class="item">注销登录</a>
+                <a  href="{% url 'password_change' %}?next={{ request.path }}" class="item">修改密码</a>
+    </div>
+</div>

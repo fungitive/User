@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+{% block header %}
+    {% include 'include/header.html' %}
+{% endblock %}
+{% block content %}
+        {% for item in article_list %}
+                <h3><a class="btn" href="/article.html?nid={{item.id}}" >{{item.title}}</a></h3>
+                <p>作者:{{ item.author}}—— 更新时间：{{ item.update_time}}</p>
+                <p>{{ item.content}}</p>
+        {% endfor%}
+{% endblock %}}

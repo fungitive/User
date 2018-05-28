@@ -1,5 +1,6 @@
-from django.shortcuts import render,redirect
-
+from django.shortcuts import render,redirect,HttpResponse
+from django.db.models.aggregates import Count
+from users import models
 # Create your views here.
 from .forms import RegisterForm
 
@@ -36,4 +37,145 @@ def register(request):
     return render(request, 'users/register.html', context={'form': form, 'next': redirect_to})
 
 def index(request):
-    return render(request, 'index.html')
+    article_list = models.Article.objects.all()
+    tag_list = models.Tag.objects.annotate(num_article=Count('article'))
+    classify_list = models.Classify.objects.annotate(num_article=Count('article'))
+    date_list = models.Article.objects.raw(
+        'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
+    return render(request, 'index.html',{
+                    'article_list':article_list,
+                    'tag_list':tag_list,
+                    'classify_list':classify_list,
+                    'date_list':date_list}
+                  )
+
+def article(request):
+    nid = request.GET.get('nid')
+    classify_list = models.Classify.objects.annotate(num_article=Count('article'))
+    article = models.Article.objects.filter(id = nid).first()
+    article_list = models.Article.objects.all()
+    tag_list = models.Tag.objects.annotate(num_article=Count('article'))
+    date_list = models.Article.objects.raw(
+        'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
+    return  render(request,'article.html',{'article':article,'classify_list': classify_list,
+                                           'article_list': article_list,
+                                           'tag_list': tag_list,
+                                           'date_list': date_list
+                                           })
+
+def header(request):
+    return render(request, 'include/header.html')
+
+def list_summary(request):
+    classify_list = models.Classify.objects.annotate(num_article=Count('article'))
+    article_list = models.Article.objects.all()
+    article = models.Article.objects.all()[1::5]
+    tag_list = models.Tag.objects.annotate(num_article=Count('article'))
+    date_list = models.Article.objects.raw(
+        'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
+    return render(request, 'list_summary.html', {'classify_list': classify_list,
+                                            'article_list': article_list,
+                                            'tag_list': tag_list,
+                                            'date_list': date_list,
+
+                                            })
+
+def list_tag(request):
+    nid = request.GET.get('nid')
+    article = models.Article.objects.filter(tag=nid).first()
+    classify_list = models.Classify.objects.annotate(num_article=Count('article'))
+    article_list = models.Article.objects.filter(tag=nid).all()
+    tag_list = models.Tag.objects.annotate(num_article=Count('article'))
+    date_list = models.Article.objects.raw(
+        'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
+    return render(request, 'list_classify.html', {'classify_list': classify_list,
+                                                 'article_list': article_list,
+                                                 'tag_list': tag_list,
+                                                 'date_list': date_list,
+                                                 'article': article,
+                                                  })
+
+def list_classify(request):
+    nid = request.GET.get('nid')
+    article = models.Article.objects.all()[1:5]
+    classify_list = models.Classify.objects.annotate(num_article=Count('article'))
+    article_list = models.Article.objects.filter(classify=nid).all()
+    tag_list = models.Tag.objects.annotate(num_article=Count('article'))
+    date_list = models.Article.objects.raw(
+        'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
+    return render(request, 'list_classify.html', {'classify_list': classify_list,
+                                                 'article_list': article_list,
+                                                 'tag_list': tag_list,
+                                                 'date_list': date_list,
+                                                 'article': article,
+                                                  })
+
+
+def list_data(request,ctime):
+    nid = request.GET.get('nid')
+    article = models.Article.objects.all()[1:5]
+    classify_list = models.Classify.objects.annotate(num_article=Count('article'))
+    article_list = models.Article.objects.extra(where=['strftime("%%Y-%%m",update_time)=%s'], params=[ctime, ]).all()
+    tag_list = models.Tag.objects.annotate(num_article=Count('article'))
+    date_list = models.Article.objects.raw(
+        'select id, count(id) as num,strftime("%Y-%m",update_time) as ctime from article group by strftime("%Y-%m",update_time)')
+    return render(request, 'list_classify.html', {'classify_list': classify_list,
+                                                 'article_list': article_list,
+                                                 'tag_list': tag_list,
+                                                 'date_list': date_list,
+                                                 'article': article,
+                                                  })
+
+def search(resquest):
+    keywords = resquest.POST.get('keywords')
+    print(keywords)
+    result = models.Article.objects.filter(title=keywords)
+    return render(resquest,'search.html',{'result':result})
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+import os
+import json
+import datetime as dt
+import uuid
+@csrf_exempt
+def upload_image(request, dir_name):
+    ##################
+    #  kindeditor图片上传返回数据格式说明：
+    # {"error": 1, "message": "出错信息"}
+    # {"error": 0, "url": "图片地址"}
+    ##################
+    result = {"error": 1, "message": "上传出错"}
+    files = request.FILES.get("imgFile", None)
+    if files:
+        result = image_upload(files, dir_name)
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+
+# 目录创建
+def upload_generation_dir(dir_name):
+    today = dt.datetime.today()
+    url_part = dir_name + '/%d/%d/' % (today.year, today.month)
+    dir_name = os.path.join(dir_name, str(today.year), str(today.month))
+    print("*********", os.path.join(settings.MEDIA_ROOT, dir_name))
+    if not os.path.exists(os.path.join(settings.MEDIA_ROOT, dir_name)):
+        os.makedirs(os.path.join(settings.MEDIA_ROOT, dir_name))
+    return dir_name,url_part
+
+
+# 图片上传
+def image_upload(files, dir_name):
+    # 允许上传文件类型
+    allow_suffix = ['jpg', 'png', 'jpeg', 'gif', 'bmp']
+    file_suffix = files.name.split(".")[-1]
+    if file_suffix not in allow_suffix:
+        return {"error": 1, "message": "图片格式不正确"}
+    relative_path_file, url_part = upload_generation_dir(dir_name)
+    path = os.path.join(settings.MEDIA_ROOT, relative_path_file)
+    print("&&&&path", path)
+    if not os.path.exists(path):  # 如果目录不存在创建目录
+        os.makedirs(path)
+    file_name = str(uuid.uuid1()) + "." + file_suffix
+    path_file = os.path.join(path, file_name)
+    file_url =settings.MEDIA_URL + url_part +file_name
+    open(path_file, 'wb').write(files.file.read())
+    return {"error": 0, "url": file_url}

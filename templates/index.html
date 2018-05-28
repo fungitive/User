@@ -2,29 +2,321 @@
 <html lang="zh-cn">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>首页</title>
-    <link rel="stylesheet" href="https://unpkg.com/mobi.css/dist/mobi.min.css">
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <style>
+        body{
+            margin: 0 auto;
+        }
+        a,a:hover{
+            text-decoration:none;
+        }
+        .left{
+            float: left;
+        }
+        .right{
+            float: right;
+        }
+        .center{
+            text-align: center;
+        }
+        .hide{
+            display: none;
+        }
+        .w1100{
+            width: 1100px;
+        }
+        /*公共css结束*/
+        /*导航条ccs开始*/
+        .pg_header{
+            background-color: #2e6da4;
+            height: 48px;
+            min-width: 1100px;
+            line-height: 48px;
+            margin-bottom: 5px;
+        }
+        .pg_header .logo{
+            color: white;
+            width: 200px;
+            background-color: #2b669a;
+            text-align: center;
+            font-size: 24px;
+        }
+        .pg_header .hl-menu,.hr-menu{
+            color: #e7fff8;
+            font-size: 16px;
+
+        }
+        .pg_header .hl-menu .item,.hr-menu .item{
+            color: white;
+            padding:0px 10px;
+            height: 48px;
+            display: inline-block;
+        }
+         .pg_header .hl-menu .item:hover{
+            background-color: #28a4c9;
+         }
+        .pg_header .hl-menu .item-set{
+            display: inline-block;
+            position: relative;
+        }
+        .pg_header .hl-menu .item-set .nav{
+            position: absolute;
+            width: 80px;
+            color: white;
+            background-color: #2e6da4;
+            border: 1px solid #2e6da4;
+            text-align: center;
+            left: -7px;
+            display: none;
+
+
+        }
+        .pg_header .hl-menu .item-set .nav a{
+            color: white;
+            font-size: 16px;
+            display: block;
+            line-height: 30px;
+        }
+        .pg_header .hl-menu .item-set .nav a:hover{
+            background-color: #28a4c9;
+        }
+        .pg_header .hl-menu .item-set:hover .nav{
+            display: block;
+        }
+        /*导航条ccs结束*/
+         /*头像ccs开始*/
+        .avataar{
+            display: inline-block;
+            position: relative;
+        }
+         .avataar .nav{
+             position: absolute;
+             width: 80px;
+             display: none;
+             text-align: center;
+             background-color: #2e6da4;
+             border: 1px solid #2b669a;
+             left: -30px;
+         }
+         .avataar .nav a{
+             color: #e7fff8;
+            font-size: 16px;
+            display: block;
+            line-height: 30px;
+         }
+        .avataar .nav a:hover{
+           background-color: #28a4c9;
+        }
+         .avataar:hover .nav{
+            display: block;
+        }
+        /*头像css结束*/
+        .pg_body{
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .pg_body .content{
+            width: 791px;
+            border: 1px solid #9d9d9d;
+
+        }
+        .pg_body .menu{
+            width: 300px;
+            border: 1px solid #9d9d9d;
+
+        }
+        .pg_body .menu .box{
+            display: inline-block;
+            width: 98%;
+        }
+         .pg_body .menu .box .title{
+             line-height: 20px;
+             font-size: 16px;
+             background-color: #2aabd2;
+             width: 97%;
+             color: red;
+             margin: 5px;
+            }
+        .pg_body .menu .box .item{
+            height: 30px;
+            font-size: 16px;
+            color: white;
+            margin: 5px;
+        }
+        .pg_body .menu .box .item .btn{
+            color: black;
+            font-size: 16px;
+            display: block;
+            line-height: 20px;
+        }
+
+        .pg_footer{
+            background-color: #2e6da4;
+            position: absolute;
+            height: 40px;
+            width: 100%;
+            min-width: 1100px;
+            line-height: 40px;
+            margin-top: 5px;
+
+        }
+    </style>
+
 </head>
 <body>
-<div class="flex-center">
-    <div class="container">
+<!--<div class="flex-center">
+    <div class="container ">
         <div>
             <h1 class="logo"><a href="{% url 'index' %}">用户登录注册案例</a></h1>
             {% if user.is_authenticated %}
-                <p>你已登录，欢迎您：<a href="#">{{ user.username }}</a>-{{ user.nickname }}</p>
-                <button class="btn btn-default"><a href="{% url 'logout' %}?next={{ request.path }}">注销登录</a></button>
-                <button class="btn btn-default"><a href="{% url 'password_change' %}?next={{ request.path }}">修改密码</a>
+                <p>你已登录，欢迎你：<a href="#">{{ user.username }}</a>-{{ user.nickname }}</p>
+                <a href="{% url 'logout' %}?next={{ request.path }}" class="btn btn-default">注销登录</a>
+                <a href="{% url 'password_change' %}?next={{ request.path }}"class="btn btn-default">修改密码</a>
             {% else %}
                 <p>你还没有登录，请
-                    <button class="btn btn-default"><a href="{% url 'login' %}?next={{ request.path }}}">登录</a></button>
+                    <a href="{% url 'login' %}?next={{ request.path }}"class="btn btn-default">登录</a>
                     或者
-                    <button class="btn btn-default"><a href="{% url 'users:register' %}">注册</a></button>
+                    <a href="{% url 'users:register' %}" class="btn btn-default">注册</a>
                 </p>
             {% endif %}
         </div>
     </div>
-</div>
+</div>-->
+{% if user.is_authenticated %}
+    {% block header %}
+    <div class="pg_header">
+        <div class="logo left">菲宇运维</div>
+        <div class="hl-menu left">
+            {% for classify in classify_list %}
+                    <a class="item" href="list_classify.html?nid={{ classify.id }}">{{classify.name}}</a>
+            {% endfor%}
+        </div>
+        <div class="hr-menu right">您已登录，欢迎您！<a href="" class="item"> 用户名</a>:{{ user.username }}-<a class="item" href=""> 昵称</a>:{{ user.nickname }}
+            <a  href="{% url 'logout' %}?next={{ request.path }}" class="item">注销登录</a>
+                    <a  href="{% url 'password_change' %}?next={{ request.path }}" class="item">修改密码</a>
+        </div>
+    </div>
+    {% endblock %}
+    <div class="pg_body center w1100">
+        <div class="content left img-thumbnail">
+            {% block content %}
+            {% for item in article_list %}
+                <h3><a class="btn" href="/article.html?nid={{item.id}}" >{{item.title}}</a></h3>
+                <p>作者:{{ item.author}}—— 更新时间：{{ item.update_time}}</p>
+                <p>{{ item.content | safe |striptags}}</p>
+            {% endfor%}
+            {% endblock %}
+        </div>
+        <div class="menu right img-thumbnail">
+            <div class="box">
+                 <div class="title btn btn-primary">标签管理</div>
+                <div class="item">
+                    {% for tag in tag_list %}
+                    <a class="btn" href="/list_tag.html?nid={{ tag.id }}">{{tag.name}}({{tag.num_article}})</a>
+                    {% endfor%}
+                </div>
+            </div>
+            <div class="box">
+                 <div class="title btn btn-primary">分类管理</div>
+                <div class="item">
+                    {% for classify in classify_list %}
+                    <a class="btn" href="list_classify.html?nid={{ classify.id }}">{{classify.name}}({{classify.num_article}})</a>
+                    {% endfor%}
+                </div>
+            </div>
+            <div class="box">
+                 <div class="title btn btn-primary">最新文章</div>
+                <div class="item">
+                    {% for item in article_list %}
+                    <a class="btn" href="/article.html?nid={{item.id}}" style="font-size: 14px">{{item.title}}</a>
+                    {% endfor%}
+                </div>
+            </div>
+            <div class="box">
+                 <div class="title btn btn-primary">时间分类</div>
+                <div class="item">
+                    {% for item in date_list %}
+                    <a class="btn" href="list_date-{{item.ctime}}.html">{{item.ctime}}</a>
+                    {% endfor%}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pg_footer  center">菲宇工作室版权所有</div>
+{% else %}
+    <div class="pg_header">
+        <div class="logo left">菲宇运维</div>
+        <div class="hl-menu left"></div>
+        <div class="hr-menu right">
+            你还没有登录，请
+            <a href="{% url 'login' %}?next={{ request.path }}" class="item">登录</a>
+            或者
+            <a href="{% url 'users:register' %}" class="item">注册</a>
+        </div>
+    </div>
+    <div class="pg_body center w1100">
+        <div class="content left img-thumbnail">你还没有登录，请
+        <a href="{% url 'login' %}?next={{ request.path }}" class="item">登录</a>
+        或者
+        <a href="{% url 'users:register' %}" class="item">注册</a>
+             <a><img src="./static/images/ad.jpg" class="item" /></a>
+        </div>
+        <div class="menu right img-thumbnail">
+            <div class="box">
+                 <div class="title btn btn-primary">类别管理</div>
+                <div class="item">
+                    <a class="btn">类别1</a>
+                    <a class="btn">标签2</a>
+                    <a class="btn">系统3</a>
+                    <a class="btn">标签2</a>
+                    <a class="btn">系统3</a>
+                </div>
+            </div>
+            <div class="box">
+                 <div class="title btn btn-primary">标签管理</div>
+                <div class="item">
+                    <a class="btn">标签1</a>
+                    <a class="btn">标签2</a>
+                    <a class="btn">标签3</a>
+                </div>
+            </div>
+            <div class="box">
+                 <div class="title btn btn-primary">按时间</div>
+                <div class="item">
+                    <a class="btn">时间1</a>
+                    <a class="btn">时间2</a>
+                    <a class="btn">时间3</a>
+                </div>
+            </div>
+
+            <div class="box">
+                 <div class="title btn btn-primary">最新文章</div>
+                <div class="item">
+                    <a class="btn">这是一篇文章的标题1</a>
+                    <a class="btn">这是一篇文章的标题2</a>
+                    <a class="btn">这是一篇文章的标题3</a>
+                    <a class="btn">这是一篇文章的标题4</a>
+                </div>
+            </div>
+            <div class="box">
+                 <div class="title btn btn-primary">热门文章</div>
+                <div class="item">
+                    <a class="btn">这是一篇文章的标题1</a>
+                    <a class="btn">这是一篇文章的标题2</a>
+                    <a class="btn">这是一篇文章的标题3</a>
+                    <a class="btn">这是一篇文章的标题4</a>
+                </div>
+            </div>
+                <a><img src="./static/images/ad.jpg" class="item" /></a>
+
+        </div>
+
+    </div>
+    <div class="pg_footer center">
+        菲宇工作室版权所有
+    </div>
+{% endif %}
 </body>
 </html>
