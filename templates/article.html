@@ -3,6 +3,7 @@
     {% include 'include/header.html' %}
 {% endblock %}
 {% block content %}
+<p>当前位置：首页>>{{ classifys.classify }}</p>
     <h4>{{article.title}}</h4>
     <p>作者:{{ article.author}}—— 更新时间：{{ article.update_time}}</p>
     <p>{{ article.content |safe}}</p>

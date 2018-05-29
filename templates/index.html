@@ -205,6 +205,11 @@
             {% for item in article_list %}
                 <h3><a class="btn" href="/article.html?nid={{item.id}}" >{{item.title}}</a></h3>
                 <p>作者:{{ item.author}}—— 更新时间：{{ item.update_time}}</p>
+                {% if item.img %}
+                    <p><img src="./upload/{{item.img | safe}}" width="100" height="100"></p>
+                {% else %}
+                     <p><img src="/upload/article/common.jpg" width="100" height="100"></p>
+                {% endif %}
                 <p>{{ item.content | safe |striptags}}</p>
             {% endfor%}
             {% endblock %}

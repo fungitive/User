@@ -45,6 +45,7 @@ urlpatterns = [
     #     name='django.contrib.sitemaps.views.sitemap'),
     url(r'^admin/upload/(?P<dir_name>[^/]+)$', views.upload_image, name='upload_image'),
     url(r'^upload/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, }),
+    url(r'^upload/artilce/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, }),
 ]
 
 

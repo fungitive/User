@@ -56,6 +56,7 @@ def index(request):
 def article(request):
     nid = request.GET.get('nid')
     classify_list = models.Classify.objects.annotate(num_article=Count('article'))
+    classifys = models.Article.objects.get(id=nid)
     article = models.Article.objects.filter(id = nid).first()
     article_list = models.Article.objects.all().order_by('-create_time')
     tag_list = models.Tag.objects.annotate(num_article=Count('article'))
@@ -64,7 +65,8 @@ def article(request):
     return  render(request,'article.html',{'article':article,'classify_list': classify_list,
                                            'article_list': article_list,
                                            'tag_list': tag_list,
-                                           'date_list': date_list
+                                           'date_list': date_list,
+                                           'classifys': classifys,
                                            })
 
 def header(request):
@@ -102,6 +104,7 @@ def list_tag(request):
 def list_classify(request):
     nid = request.GET.get('nid')
     article = models.Article.objects.all()[1:5]
+    classifys =  models.Classify.objects.get(id=nid)
     classify_list = models.Classify.objects.annotate(num_article=Count('article'))
     article_list = models.Article.objects.filter(classify=nid).all().order_by('-create_time')
     tag_list = models.Tag.objects.annotate(num_article=Count('article'))
@@ -112,6 +115,7 @@ def list_classify(request):
                                                  'tag_list': tag_list,
                                                  'date_list': date_list,
                                                  'article': article,
+                                                   'classifys': classifys,
                                                   })
 
 

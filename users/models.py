@@ -14,6 +14,11 @@ class Article(models.Model):
     title = models.CharField(verbose_name='标题',max_length=32,)
     author = models.CharField(verbose_name='作者',max_length=12)
     summary = models.CharField(verbose_name='摘要', max_length=100)
+    img = models.ImageField(verbose_name='缩略图',upload_to="./article/",
+                            help_text="大小200*200，不超过200k",
+                            default="/upload/article/common.jpg",
+                            auto_created=True,
+                            null=True,blank=True)
     content = models.TextField(verbose_name='内容', max_length=9999)
     tag = models.ManyToManyField('Tag',verbose_name='标签')
     classify = models.ForeignKey('Classify',verbose_name='分类')
