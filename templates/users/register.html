@@ -2,41 +2,48 @@
 <html lang="zh-cn">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>注册</title>
-    <link rel="stylesheet" href="https://unpkg.com/mobi.css/dist/mobi.min.css">
+ <link rel="stylesheet" href="/static/plugins/bootstrap-3.3.7/css/bootstrap.css">
     <style>
         .errorlist {
             color: red;
+            width: 40%;
+            float: right;
+            padding-top: 5px;
+        }
+        .registry{
+            height: 40px;line-height: inherit;
+        }
+        li{
+            list-style-type: none;
         }
     </style>
 </head>
 <body>
-<div class="flex-center">
-    <div class="container">
-        <div class="flex-center">
-            <div class="unit-1-2 unit-1-on-mobile">
+<div class="container" style="width: 600px;">
+
                 <h3>注册</h3>
-                <form class="form" action="{% url 'users:register' %}" method="post" novalidate>
+                <form action="{% url 'users:register' %}" method="post" novalidate>
                     {% csrf_token %}
                     {% for field in form %}
-                        {{ field.label_tag }}
-                        {{ field }}
-                        {{ field.errors }}
-                        {% if field.help_text %}
-                            <p class="help text-small text-muted">{{ field.help_text|safe }}</p>
-                        {% endif %}
+                        <ul class="list-unstyled">
+                            <li><p class="text-left">{{ field.label_tag }}{{ field }}{{ field.errors }}</p></li>
+                        </ul>
                     {% endfor %}
+                        <ul class="list-unstyled">
+                            <li><p><label style="float: left;width: 40px;">验证码</label><input type="text" style="float: left;width:120px;" name='check_code' id="check_code" placeholder="请输入验证码"><img src="/check_code.html"></p></li>
+                        </ul>
+{#                            {% if field.help_text %}#}
+{#                                <p class="help text-small text-muted">{{ field.help_text|safe }}</p>#}
+{#                            {% endif %}#}
+
                     <button type="submit" class="btn btn-primary btn-block">注册</button>
-                    <input type="hidden" name="next" value="{{ next }}"/>
+                     <input type="hidden" name="next" value="{{ next }}"/>
                 </form>
-                <div class="flex-center top-gap text-small">
-                    <a href="login.html">已有账号登录</a>
+                <div >
+                    <a href="/users/login">已有账号登录</a>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 </body>
 </html>

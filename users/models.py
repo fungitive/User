@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
+
     nickname = models.CharField('昵称',max_length=50, blank=True)
 
     class Meta(AbstractUser.Meta):
@@ -43,5 +44,18 @@ class Classify(models.Model):
     class Meta:
         db_table = 'classify'
         verbose_name_plural = '文章分类'
+        verbose_name = '文章分类'
+    def __str__(self):
+        return self.name
+
+class Info(models.Model):
+    name = models.CharField(verbose_name="网站名称",max_length=20)
+    describe = models.CharField(verbose_name="站点描述",help_text="不超过200字",max_length=200)
+    keyword = models.CharField(verbose_name="关键字",help_text="以,间隔",max_length=100)
+    beian = models.CharField(verbose_name="备案号",max_length=32)
+    class Meta:
+        db_table = 'info'
+        verbose_name_plural = '站点信息'
+        verbose_name = '站点信息'
     def __str__(self):
         return self.name

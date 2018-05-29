@@ -4,15 +4,23 @@
 {% endblock %}
 {% block content %}
 
-        <p>当前位置：首页>>{{ classifys.name }}</p>
+        <p class="text-left">当前位置：<a href="/">首页</a>>><a href="list_classify.html?nid={{ classifys.id }}">{{ classifys.name }}</a></p>
         {% for item in article_list %}
-                <h3><a class="btn" href="/article.html?nid={{item.id}}" >{{item.title}}</a></h3>
-                <p>作者:{{ item.author}}—— 更新时间：{{ item.update_time}}-{{ item.classify}}</p>
-                {% if item.img %}
-                    <p><img src="./upload/{{item.img | safe}}" width="100" height="100"></p>
-                {% else %}
-                     <p><img src="/upload/article/common.jpg" width="100" height="100"></p>
-                {% endif %}
-                <p>{{ item.content |safe|striptags}}</p>
+            <div class="media">
+  <div class="media-left">
+    <a href="#">
+         {% if item.img %}
+                                  <img class="media-object" src="./upload/{{item.img | safe}}" width="100" height="100">
+                              {% else %}
+                                  <img class="media-object" src="/upload/article/common.jpg" width="100" height="100">
+                              {% endif %}
+    </a>
+  </div>
+  <div class="media-body ">
+   <h3 class="media-heading media-left"><a href="/article.html?nid={{item.id}}" >{{item.title}}</a>  <span style="right: 5px;"> 更新时间：{{ item.update_time}}</span></h3>
+                                        <p>{{ item.content |safe|striptags}}</p>
+  </div>
+</div>
+
             {% endfor%}
 {% endblock %}}

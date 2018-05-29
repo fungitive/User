@@ -1,6 +1,6 @@
 from django.contrib import admin
 from users.models import User
-from .models import Article,Tag,Classify
+from .models import Article,Tag,Classify,Info
 # Register your models here.
 
 #admin.site.register(User)
@@ -33,5 +33,5 @@ admin.site.site_title = '用户管理系统'
 
 admin.site.register(Tag)
 admin.site.register(Classify)
-
+admin.site.register(Info)
 

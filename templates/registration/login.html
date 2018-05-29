@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="flex-center">
-    <div class="container">
+    <div class="container" style="width: 600px;">
         <div class="flex-center">
             <div class="unit-1-2 unit-1-on-mobile">
                 <h3>登录</h3>
@@ -29,7 +29,10 @@
                             <p class="help text-small text-muted">{{ field.help_text|safe }}</p>
                         {% endif %}
                     {% endfor %}
-                    <button type="submit" class="btn btn-primary btn-block">登录</button>
+                    <ul class="list-unstyled">
+                            <li><p><label style="float: left;width: 40px;">验证码</label><input type="text" style="float: left;width:120px;" name='check_code' id="check_code" placeholder="请输入验证码"><img src="/check_code.html"></p> <span id="error_msg" style="font-size: 12px;"></span></li>
+                        </ul>
+                    <button type="submit">登录</button>
                     <input type="hidden" name="next" value="{{ next }}"/>
                 </form>
                 <div class="flex-left top-gap text-small">
