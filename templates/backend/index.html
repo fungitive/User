@@ -2,11 +2,269 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    {% block title %}
+    <title>首页-后台管理中心</title>
+    {% endblock %}
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+{% block styles %}
+{% endblock %}
+    <style>
+        body{
+            margin: 0 auto;
+        }
+        a,a:hover{
+            text-decoration:none
+        }
+
+        .left{
+            float: left;
+        }
+        .right{
+            float: right;
+        }
+        .hide{
+            display: none;
+        }
+        .header{
+            background-color: #2e6da4;
+            height: 48px;
+            min-width: 1100px;
+            line-height: 48px;
+        }
+        .header .logo{
+            color: white;
+            width: 200px;
+            background-color: #2b669a;
+            text-align: center;
+            font-size: 24px;
+        }
+        .header .hl-menu,.hr-menu{
+            color: #e7fff8;
+            font-size: 16px;
+
+        }
+        .header .hl-menu .item,.hr-menu .item{
+            color: white;
+            padding:0px 10px;
+            height: 48px;
+            display: inline-block;
+        }
+         .header .hl-menu .item:hover{
+            background-color: #28a4c9;
+         }
+        .header .hl-menu .item-set{
+            display: inline-block;
+            position: relative;
+        }
+        .header .hl-menu .item-set .nav{
+            position: absolute;
+            width: 80px;
+            color: white;
+            background-color: #2e6da4;
+            border: 1px solid #2e6da4;
+            text-align: center;
+            left: -7px;
+            display: none;
+            z-index: 999;
+
+
+        }
+        .header .hl-menu .item-set .nav a{
+            color: #e7fff8;
+            font-size: 16px;
+            display: block;
+            line-height: 30px;
+        }
+        .header .hl-menu .item-set .nav a:hover{
+            background-color: #28a4c9;
+        }
+        .header .hl-menu .item-set:hover .nav{
+            display: block;
+        }
+        .avataar{
+            display: inline-block;
+            position: relative;
+        }
+         .avataar .nav{
+             position: absolute;
+             width: 80px;
+             display: none;
+             text-align: center;
+             background-color: #2e6da4;
+             border: 1px solid #2b669a;
+             left: -30px;
+             z-index: 999;
+         }
+         .avataar .nav a{
+             color: #e7fff8;
+            font-size: 16px;
+            display: block;
+            line-height: 30px;
+         }
+
+        .avataar .nav a:hover{
+           background-color: #28a4c9;
+        }
+         .avataar:hover .nav{
+            display: block;
+        }
+        .pg_body .menus{
+            width: 200px;
+            background-color: #f6edec;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            top: 48px;
+        }
+        .pg_body .menus .item{
+            line-height: 30px;
+            font-size: 16px;
+            text-align: center;
+            display: block;
+
+        }
+        .pg_body .menus .item:hover{
+        background:#9d9d9d ;
+
+        }
+        .pg_body .content{
+            position: absolute;
+            left: 205px;
+            top: 48px;
+            right: 0;
+            bottom: 0;
+            background-color:#f9f9f9;
+            overflow: scroll;
+            padding: 0 10px;
+        }
+        .pg_body .content .nav-left{
+            float: left;
+            width: 40%;
+        }
+        .pg_body .content .nav-middle{
+            width: 30%;
+            float: left;
+        }
+         .pg_body .content .nav-right{
+             float: right;
+             margin-top: 3px;
+             width: 30%;
+         }
+    </style>
 </head>
 <body>
-{% for classify in classify_list %}
+    <div class="header">
+        <div class="logo left">后台管理平台</div>
+        <div class="hl-menu left">
+            {% for classify in classify_list %}
                     <a class="item" href="list_classify.html?nid={{ classify.id }}">{{classify.name}}</a>
             {% endfor%}
+            <a class="item" href="">菜单二</a>
+            <a class="item" href="">菜单三</a>
+            <a class="item" href="">菜单四</a>
+            <div class="item-set">
+                <a class="item" href="">菜单五</a>
+                <div class="nav">
+                    <a  href="">菜单五-1</a>
+                    <a  href="">菜单五-1</a>
+                    <a  href="">菜单五-1</a>
+                </div>
+            </div>
+            <div class="item-set">
+                <a class="item" href="">菜单六</a>
+                <div class="nav">
+                    <a  href="">菜单五-1</a>
+                    <a  href="">菜单五-1</a>
+                    <a  href="">菜单五-1</a>
+                </div>
+            </div>
+        </div>
+        <div class="hr-menu right">
+            <a class="item" href="">
+                消息 <i class="fa fa-comments" aria-hidden="true"></i>
+                <span class="badge bg-primary">2</span>
+            </a>
+            <a class="item" href="">
+                通知 <i class="fa fa-envelope-open" aria-hidden="true"></i>
+                <span class="bg-info badge">1</span>
+            </a>
+            <a class="item" href="">
+                任务 <i class="fa fa-bell-o" aria-hidden="true"></i>
+                <span class="badge bg-danger">4</span>
+            </a>
+            <div class="avataar right">
+                <a class="item" href="">
+                    <img src="/static/avatar.png" style="width: 40px;height: 40px;border-radius: 50%;margin-top:5px; ">
+                </a>
+                <div class="nav">
+                    <a  href="">修改密码</a>
+                    <a  href="">个人资料</a>
+                    <a  href="">退出</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pg_body">
+        <div class="menus">
+            <a class="item" href="article_list">文章管理</a>
+            <a class="item">类别管理</a>
+            <a class="item">标签管理</a>
+            <a class="item" href="sys_info">系统管理</a>
+        </div>
+    <div class="content">
+    {% block content %}
+
+            <div class="nav-left"><h4>文章管理</h4></div>
+        <div class="nav-middle">搜索</div>
+            <div class="nav-right"><a href="article_add" class="btn btn-info">添加文章</a></div>
+    <div>
+
+    <table align="center" class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>标题</th>
+            <th>作者</th>
+            <th>发布时间</th>
+            <th>分类</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for row in article_list %}
+                <tr>
+                <td>
+                    {{ row.id }}
+                </td>
+                     <td>
+                    {{ row.title }}
+                </td>
+                <td>
+                    {{ row.author }}
+                </td>
+                <td>
+                   {{ row.create_time }}
+                </td>
+                <td>
+                   {{ row.classify }}
+                </td>
+                <td>
+                    <a href="article_delete?nid={{ row.id }}">删除</a>
+                    |<a href="article_edit?nid={{ row.id }}">编辑</a>
+                </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <ul class="pagination pagination-sm">
+        {{ page_obj.page_str|safe }}
+      </ul>
+<p>共{{ article_list.count }}条</p>
+    {% endblock %}
+            </div>
+        </div>
+    </div>
+    <div class=""></div>
 </body>
 </html>

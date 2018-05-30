@@ -2,18 +2,27 @@ from django.shortcuts import render,redirect,HttpResponse
 from users import models
 from django.db.models.aggregates import Count
 from .forms import *
+from .pages import Pagination
 # Create your views here.
 def logo(request):
     return render(request,'backend/login.html')
 def index(request):
+
+    current_page = request.GET.get('page')
+    count_pages = models.Article.objects.all().count()
+    page_obj = Pagination(count_pages, current_page)
     classify_list = models.Classify.objects.annotate(num_article=Count('article'))
-    return render(request,'backend/index.html',{'classify_list':classify_list})
+    article_list = models.Article.objects.all().order_by('-create_time')[page_obj.start():page_obj.end()]
+    return render(request,'backend/index.html',{'classify_list':classify_list,'article_list':article_list,'page_obj':page_obj})
 def sys_info(request):
     sys_info = Info_sysForm()
     return render(request,'backend/sys_info.html',{'sys_info':sys_info})
 def article_list(request):
-    article_list = models.Article.objects.all().order_by('-create_time')
-    return render(request,'backend/article_list.html',{'article_list':article_list})
+    current_page = request.GET.get('page')
+    count_pages = models.Article.objects.all().count()
+    page_obj = Pagination(count_pages, current_page)
+    article_list = models.Article.objects.all().order_by('-create_time')[page_obj.start():page_obj.end()]
+    return render(request,'backend/article_list.html',{'article_list':article_list,'page_obj':page_obj})
 
 def article_edit(request):
     if request.method=="GET":
