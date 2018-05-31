@@ -7,7 +7,6 @@ from .pages import Pagination
 def logo(request):
     return render(request,'backend/login.html')
 def index(request):
-
     current_page = request.GET.get('page')
     count_pages = models.Article.objects.all().count()
     page_obj = Pagination(count_pages, current_page)
@@ -38,7 +37,13 @@ def article_edit(request):
     return
 
 def article_add(request):
-    return
+    if request.method=="GET":
+        classify = models.Classify.objects.all()
+        tags = models.Tag.objects.all()
+        return render(request,'backend/article_add.html',{'classify':classify,'tags':tags})
+    elif request.method=="POST":
+        title = request.POST.get('title')
+        return redirect("/article_list")
 def article_delete(request):
     nid = request.GET.get('nid')
     models.Article.objects.filter(id=nid).delete()

@@ -39,6 +39,11 @@
             text-align: center;
             font-size: 24px;
         }
+        .header .logo a,.header .logo a:hover{
+            color: white;
+            background-color: #2b669a;
+
+        }
         .header .hl-menu,.hr-menu{
             color: #e7fff8;
             font-size: 16px;
@@ -136,7 +141,7 @@
             bottom: 0;
             background-color:#f9f9f9;
             overflow: scroll;
-            padding: 0 10px;
+            padding: 10px 10px;
         }
         .pg_body .content .nav-left{
             float: left;
@@ -155,7 +160,7 @@
 </head>
 <body>
     <div class="header">
-        <div class="logo left">后台管理平台</div>
+        <div class="logo left"><a href="index.html">后台管理平台</a></div>
         <div class="hl-menu left">
             {% for classify in classify_list %}
                     <a class="item" href="list_classify.html?nid={{ classify.id }}">{{classify.name}}</a>
@@ -181,6 +186,9 @@
             </div>
         </div>
         <div class="hr-menu right">
+             <a class="item" href="/">
+                站点首页 <i class="fa fa-home" aria-hidden="true"></i>
+            </a>
             <a class="item" href="">
                 消息 <i class="fa fa-comments" aria-hidden="true"></i>
                 <span class="badge bg-primary">2</span>
@@ -250,8 +258,9 @@
                    {{ row.classify }}
                 </td>
                 <td>
-                    <a href="article_delete?nid={{ row.id }}">删除</a>
-                    |<a href="article_edit?nid={{ row.id }}">编辑</a>
+                    <a href="article_delete?nid={{ row.id }}">删除 <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a>
+                    | <a href="article_edit?nid={{ row.id }}">编辑</a>
+                    | <a href="/article.html?nid={{ row.id }}">预览</a>
                 </td>
                 </tr>
             {% endfor %}

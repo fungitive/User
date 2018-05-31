@@ -1,4 +1,7 @@
 {% extends 'index.html' %}
+    {% block titile %}
+    <title>{{article.title}}-{{ article.classify }}</title>
+    {% endblock %}
 {% block header %}
     {% include 'include/header.html' %}
 {% endblock %}
