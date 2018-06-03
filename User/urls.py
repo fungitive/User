@@ -29,7 +29,7 @@ from django.views.static import serve
 # }
 app_name = 'users'
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^adm/', admin.site.urls),
     url(r'^backend/', include('backend.urls')),
     url(r'^header.html', views.header),
     url(r'^article', views.article, name='article'),

@@ -1,5 +1,5 @@
 class Pagination(object):
-    def __init__(self,totalCount,currentPage,perPageItemNum=2,maxPageNum=7):
+    def __init__(self,totalCount,currentPage,perPageItemNum=10,maxPageNum=7):
         # 数据总个数
         self.total_count = totalCount
         # 当前页

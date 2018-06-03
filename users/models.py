@@ -24,7 +24,7 @@ class Article(models.Model):
     tag = models.ManyToManyField('Tag',verbose_name='标签')
     classify = models.ForeignKey('Classify',verbose_name='分类')
     create_time = models.DateTimeField(verbose_name='发布时间',auto_now_add=True)
-    update_time = models.DateTimeField(verbose_name='更新时间')
+    update_time = models.DateTimeField(verbose_name='更新时间',auto_now_add=True)
 
     class Meta:
         db_table = 'article'
@@ -59,3 +59,11 @@ class Info(models.Model):
         verbose_name = '站点信息'
     def __str__(self):
         return self.name
+
+class Imgtest(models.Model):
+    title = models.CharField(verbose_name='标题',max_length=32,)
+    img = models.ImageField(verbose_name='缩略图',upload_to="./article/",
+                            help_text="大小200*200，不超过200k",
+                            default="/upload/article/common.jpg",
+                            auto_created=True,
+                            null=True,blank=True)
